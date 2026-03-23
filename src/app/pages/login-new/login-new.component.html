@@ -1,0 +1,76 @@
+<div class="login">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 col-lg-6 p-0">
+        <div class="login_logo text-center">
+          <div class="login_img">
+            <img src="./assets/img/Crown_logo.png" alt="Crown Logo" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-6">
+        <div class="login_form d-flex align-content-around flex-wrap">
+          <div class="login_field">
+            <div class="login_heading d-flex justify-content-between pr-4 pl-4 pb-2">
+              <h5>Sign in</h5>
+            </div>
+
+            <form [formGroup]="loginForm" (submit)="onSubmit()">
+              <div class="row input_bg">
+                <div *ngIf="!showPassword" class="input-group input-group-icon">
+                  <input type="email" placeholder="Username" formControlName="username" maxlength="50" />
+                  <div class="input-icon"><img src="assets/img/email.svg"></div>
+                  <div class="errorMsg-feedback" *ngIf="f.username.touched && f.username.hasError('required')">Enter
+                    User ID</div>
+                </div>
+
+                <div *ngIf="showPassword" class="input-group input-group-icon">
+                  <input type="password" placeholder="Password" formControlName="password"
+                    [type]="fieldTextType ? 'text' : 'password'" />
+                  <div class="input-icon"><i class="fa" [ngClass]="{
+                    'fa-eye-slash': !fieldTextType,
+                    'fa-eye': fieldTextType
+                  }" (click)="toggleFieldTextType()" style="padding: 17px;padding-left: 23px;"></i></div>
+                  <div class="errorMsg-feedback" *ngIf="f.password.touched && f.password.hasError('required')">Enter
+                    password</div>
+                </div>
+              </div>
+
+              <div class="button-row">
+                <a *ngIf="showPassword" style="color: #ffcc00;;" routerLink="/forgot-password" class=" ml-3">Forgot
+                  password ?</a>
+                <button *ngIf="!showPassword" type="button" (click)="proceedToPassword()" class="sign_btn">Next</button>
+                <button *ngIf="showPassword" type="submit" [disabled]="loginForm.invalid" class="sign_btn">Sign
+                  In</button>
+                <button *ngIf="showPassword" type="button" (click)="backToUserId()" style="margin-right: 1rem;"
+                  class="back_btn">Back To UserID</button>
+              </div>
+
+              <div *ngIf="!showPassword" class="sso-section">
+                <div class="divider"><span>OR</span></div>
+                <button class="microsoft-auth-btn" (click)="login()" type="button">
+                  <div class="logo-section">
+                    <img src="assets/img/microsoft-logo.svg" alt="Microsoft logo" />
+                  </div>
+                  <span class="btn-text">Sign in with Microsoft</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showotpTemplate">
+      <ng-container *ngTemplateOutlet="otp"></ng-container>
+    </div>
+    <ng-template #otp>
+      <div class="template-content">
+        <div class="template-box">
+          <button (click)="closeTemplate()" class="close-btn">X</button>
+
+        </div>
+        <div class="card-body">
+          <app-otp></app-otp>
+        </div>
+      </div>
+    </ng-template>
